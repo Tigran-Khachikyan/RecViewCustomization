@@ -20,22 +20,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <HorizontalScrollView
-            android:id="@+id/nested_call"
-            android:orientation="horizontal"
-            android:layout_width="0dp"
-            android:fillViewport="true"
-            android:layout_gravity="fill_vertical"
-            android:layout_height="wrap_content"
-            app:layout_constraintEnd_toStartOf="@id/lay_central"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
-
             <LinearLayout
                 android:id="@+id/lay_call"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:fillViewport="true"
+                android:layout_gravity="fill_vertical"
+                app:layout_constraintEnd_toStartOf="@id/lay_central"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rec_header_call"
@@ -52,31 +46,29 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="3"
+                    app:spanCount="6"
                     tools:itemCount="12"
                     tools:listitem="@layout/list_item_simple_element" />
 
             </LinearLayout>
 
-        </HorizontalScrollView>
-
         <LinearLayout
             android:id="@+id/lay_central"
-            android:layout_width="78dp"
+            android:layout_width="60dp"
             android:layout_height="wrap_content"
             android:orientation="vertical"
-            app:layout_constraintEnd_toStartOf="@id/nested_put"
-            app:layout_constraintStart_toEndOf="@id/nested_call"
+            app:layout_constraintEnd_toStartOf="@id/lay_put"
+            app:layout_constraintStart_toEndOf="@id/lay_call"
             app:layout_constraintTop_toTopOf="parent">
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:layout_width="match_parent"
-                android:layout_height="36dp"
+                android:layout_height="22dp"
                 android:background="@android:color/black"
                 android:gravity="center"
                 android:text="Strike"
                 android:textColor="@color/white"
-                android:textSize="18sp"
+                android:textSize="14sp"
                 android:textStyle="bold" />
 
             <androidx.recyclerview.widget.RecyclerView
@@ -91,22 +83,14 @@
 
         </LinearLayout>
 
-        <HorizontalScrollView
-            android:id="@+id/nested_put"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:fillViewport="true"
-            android:layout_gravity="fill_vertical"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@id/lay_central"
-            app:layout_constraintTop_toTopOf="parent">
-
             <LinearLayout
                 android:id="@+id/lay_put"
-                android:layout_width="wrap_content"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toEndOf="@id/lay_central"
+                app:layout_constraintTop_toTopOf="parent">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rec_header_put"
@@ -123,13 +107,11 @@
                     android:layout_height="wrap_content"
                     android:orientation="horizontal"
                     app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                    app:spanCount="3"
+                    app:spanCount="6"
                     tools:itemCount="12"
                     tools:listitem="@layout/list_item_simple_element" />
 
             </LinearLayout>
-
-        </HorizontalScrollView>
 
     </androidx.constraintlayout.widget.ConstraintLayout>
 
