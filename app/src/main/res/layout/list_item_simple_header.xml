@@ -5,11 +5,11 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_header"
-        android:layout_width="56dp"
-        android:layout_height="28dp"
+        android:layout_width="52dp"
+        android:layout_height="22dp"
         android:background="@android:color/black"
         android:text="Bid"
-        android:textSize="17sp"
+        android:textSize="12sp"
         android:textStyle="bold"
         android:textColor="@color/white"
         android:gravity="center"/>

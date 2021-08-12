@@ -10,13 +10,10 @@ import com.task.recviewcustomization.databinding.ListItemDataBinding
 class ParentAdapter : RecyclerView.Adapter<ParentAdapter.Holder>() {
 
     private var dataList: List<Data> = arrayListOf()
+    private var scrollOffset = 0
 
     private val differ = AsyncListDiffer(this, object : DiffUtil.ItemCallback<Data>() {
         override fun areItemsTheSame(oldItem: Data, newItem: Data): Boolean {
-            Log.d(
-                "scrol777",
-                "areItemsTheSame : oldItem.scrX: " + oldItem.scrX + ", newItem.scrX" + newItem.scrX
-            )
             return oldItem.date == newItem.date
         }
 
@@ -24,7 +21,6 @@ class ParentAdapter : RecyclerView.Adapter<ParentAdapter.Holder>() {
     })
 
     fun update(data: List<Data>) {
-        Log.d("scrol777", "update")
         dataList = data
         differ.submitList(data)
     }
@@ -50,10 +46,17 @@ class ParentAdapter : RecyclerView.Adapter<ParentAdapter.Holder>() {
             Log.d("scrol777", "bind data.scrX: " + data.scrX)
 
             with(binding) {
+                val columnCount = data.headerData.size
+                val spanCount = data.callData.size / columnCount
+                val call = convert(data.callData, columnCount)
+                val put = convert(data.callData, columnCount)
+                call.forEach {
+                    Log.d("kksa555", "k: " + it)
+                }
                 headerAdapter.submit(data.headerData)
                 centralAdapter.submit(data.strikeList)
-                callsDataAdapter.submit(data.callData)
-                putsDataAdapter.submit(data.putData)
+                callsDataAdapter.submit(call)
+                putsDataAdapter.submit(put)
 
                 btnDate.text = data.date
 
@@ -83,13 +86,13 @@ class ParentAdapter : RecyclerView.Adapter<ParentAdapter.Holder>() {
                     //  isNestedScrollingEnabled = false
 
                     adapter = centralAdapter
-
                     // layoutManager = object : LinearLayoutManager(context,RecyclerView.VERTICAL, false){ override fun canScrollVertically(): Boolean { return false } }
                 }
 
                 recDataCall.apply {
                     //onScroll()
                     setHasFixedSize(true)
+                    layoutManager = GridLayoutManager(context, spanCount, RecyclerView.HORIZONTAL, false)
                     // itemAnimator = null
                     /*          isNestedScrollingEnabled = false
 
@@ -102,6 +105,7 @@ class ParentAdapter : RecyclerView.Adapter<ParentAdapter.Holder>() {
                 recDataPut.apply {
                     // onScroll()
                     setHasFixedSize(true)
+                    layoutManager = GridLayoutManager(context, spanCount, RecyclerView.HORIZONTAL, false)
                     // isNestedScrollingEnabled = false
                     // itemAnimator = null
                     /*                 layoutManager = object :GridLayoutManager(context,3, RecyclerView.HORIZONTAL, false){
@@ -112,10 +116,10 @@ class ParentAdapter : RecyclerView.Adapter<ParentAdapter.Holder>() {
 
                 data.scrX?.let {
                     Log.d("scrol777", "in BINDING data.scrX: " + it)
-                    recDataCall.scrollBy(it, 0)
-                    recDataPut.scrollBy(it, 0)
-                    recHeaderCall.scrollBy(it, 0)
-                    recHeaderPut.scrollBy(it, 0)
+                    recDataCall.scrollBy(scrollOffset, 0)
+                    recDataPut.scrollBy(scrollOffset, 0)
+                    recHeaderCall.scrollBy(scrollOffset, 0)
+                    recHeaderPut.scrollBy(scrollOffset, 0)
                 }
             }
         }
@@ -131,10 +135,27 @@ class ParentAdapter : RecyclerView.Adapter<ParentAdapter.Holder>() {
                 override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                     super.onScrolled(recyclerView, dx, dy)
 
-                    // binding.recDataPut.scrollBy(dx,dy)
-              /*      binding.recDataCall.scrollBy(dx, dy)
-                    binding.recHeaderPut.scrollBy(dx, dy)
-                    binding.recHeaderCall.scrollBy(dx, dy)*/
+
+
+                    if (dx == 0) {
+                        scrollOffset = 0;
+                    } else {
+                        scrollOffset += dx;
+                    }
+
+                    /*      with(binding) {
+                              recDataCall.offsetChildrenHorizontal(dx)
+                              recDataPut.offsetChildrenHorizontal(dx)
+                              recHeaderCall.offsetChildrenHorizontal(dx)
+                              recHeaderPut.offsetChildrenHorizontal(dx)
+                          }*/
+
+                    Log.d("scrol777", "HorizScrol - x: " + dx)
+                    val newData = ArrayList<Data>(dataList)
+                    val copied = newData.map {
+                        it.copy(scrX = scrollOffset)
+                    }
+                    update(copied)
                 }
             })
         }
